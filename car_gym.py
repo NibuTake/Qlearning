@@ -30,7 +30,7 @@ def update_q_table(_q_table, _action,  _observation, _next_observation, _reward,
     return _q_table
 
 def get_action(_env, _q_table, _observation, _episode, _iteration, _epoch):
-    epsilon = 0.002
+    epsilon = 0.0025
     if np.random.uniform(0, 1) > epsilon:
         position, velocity = get_status(observation)
         _action = np.argmax(_q_table[position][velocity])
@@ -52,7 +52,7 @@ best_qtable_list = []
 
 last_reward = 200
 
-for l, episode in enumerate(range(20000)):
+for l, episode in enumerate(range(5000)):
 
     total_reward = 0
     observation = env.reset()
@@ -68,8 +68,7 @@ for l, episode in enumerate(range(20000)):
             reward = reward + observation[1]*1
 
         if (done==True) & (k+1<200) :
-            reward = 150 * (0.998 ** k)
-
+            reward = 10
 
         # Qテーブルの更新
         q_table = update_q_table(q_table, action, observation, next_observation,
@@ -125,7 +124,7 @@ def display_frames_as_gif(frames):
 observation = env.reset()
 frames = []
 
-for i_episode in range(2):
+for i_episode in range(3):
     observation = env.reset()
     for t in range(200):
         env.render()
